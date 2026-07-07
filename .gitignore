@@ -1,0 +1,29 @@
+.gradle/
+build/
+out/
+.kotlin/
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+application-local.yml
+application-local.yaml
+local.properties
+
+# Logs and runtime dumps
+*.log
+logs/
+hs_err_pid*
+replay_pid*
+
+# Docker/local data
+docker-data/
+postgres-data/
