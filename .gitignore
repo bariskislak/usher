@@ -1,11 +1,21 @@
+# Gradle
 .gradle/
-build/
-out/
+**/build/
+
+# Kotlin/JVM build artifacts
 .kotlin/
+out/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+!gradle/wrapper/gradle-wrapper.jar
 
 # IDE
 .idea/
 *.iml
+.vscode/
 
 # OS
 .DS_Store
@@ -23,6 +33,7 @@ local.properties
 logs/
 hs_err_pid*
 replay_pid*
+*.hprof
 
 # Docker/local data
 docker-data/

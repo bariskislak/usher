@@ -1,6 +1,12 @@
 spring:
   application:
     name: analytics-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/analytics_db}
+    username: ${SPRING_DATASOURCE_USERNAME:usher}
+    password: ${SPRING_DATASOURCE_PASSWORD:usher}
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.yaml
 
 server:
   port: 8083

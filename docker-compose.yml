@@ -75,6 +75,10 @@ services:
         condition: service_healthy
     ports:
       - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth_db
+      SPRING_DATASOURCE_USERNAME: usher
+      SPRING_DATASOURCE_PASSWORD: usher
 
   url-service:
     build:
@@ -92,6 +96,10 @@ services:
         condition: service_healthy
     ports:
       - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/url_db
+      SPRING_DATASOURCE_USERNAME: usher
+      SPRING_DATASOURCE_PASSWORD: usher
 
   gateway:
     build:
@@ -122,6 +130,10 @@ services:
         condition: service_healthy
     ports:
       - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/analytics_db
+      SPRING_DATASOURCE_USERNAME: usher
+      SPRING_DATASOURCE_PASSWORD: usher
 
   notification-service:
     build:
@@ -137,6 +149,10 @@ services:
         condition: service_healthy
     ports:
       - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notification_db
+      SPRING_DATASOURCE_USERNAME: usher
+      SPRING_DATASOURCE_PASSWORD: usher
 
 volumes:
   postgres-data:

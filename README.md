@@ -11,6 +11,8 @@ This phase only prepares the foundation:
 - Shared `common` module
 - PostgreSQL, Kafka + Zookeeper, and Redis through Docker Compose
 - `/actuator/health` on every service
+- Liquibase foundation on database-owning services
+- Technology-independent messaging and cache ports in `common`
 
 ## Module Structure
 
@@ -20,6 +22,14 @@ This phase only prepares the foundation:
 - `analytics-service` - starter module for Kafka consumers and reporting
 - `notification-service` - starter module for external notification integrations
 - `common` - shared DTO/util module
+
+## Common Ports
+
+The `common` module defines contracts only. It does not contain Kafka, Redis, or other infrastructure adapters yet.
+
+- `EventPublisher`
+- `EventConsumer`
+- `CachePort`
 
 ## Running Locally
 
@@ -49,6 +59,15 @@ Check PostgreSQL databases:
 
 ```bash
 docker compose exec postgres psql -U usher -d usher_admin -c "\\l"
+```
+
+Check Liquibase metadata tables after the services start:
+
+```bash
+docker compose exec postgres psql -U usher -d auth_db -c "\\dt"
+docker compose exec postgres psql -U usher -d url_db -c "\\dt"
+docker compose exec postgres psql -U usher -d analytics_db -c "\\dt"
+docker compose exec postgres psql -U usher -d notification_db -c "\\dt"
 ```
 
 Check Redis:
