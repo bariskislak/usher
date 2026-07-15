@@ -22,3 +22,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+auth:
+  jwt:
+    secret: ${AUTH_JWT_SECRET:usher-local-development-secret-must-be-at-least-32-bytes}
+    expires-in-seconds: ${AUTH_JWT_EXPIRES_IN_SECONDS:900}
+  refresh-token:
+    expires-in-seconds: ${AUTH_REFRESH_TOKEN_EXPIRES_IN_SECONDS:604800}

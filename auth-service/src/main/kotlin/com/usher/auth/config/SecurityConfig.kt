@@ -21,7 +21,13 @@ class SecurityConfig {
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
-                it.requestMatchers("/auth/register", "/actuator/health").permitAll()
+                it.requestMatchers(
+                    "/auth/register",
+                    "/auth/login",
+                    "/auth/refresh",
+                    "/auth/me",
+                    "/actuator/health",
+                ).permitAll()
                     .anyRequest().denyAll()
             }
             .build()

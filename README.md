@@ -20,8 +20,8 @@ Current auth progress:
 - User persistence is modeled behind an application-level `UserRepository` port.
 - PostgreSQL persistence is implemented through a JPA adapter.
 - Tests use a fake in-memory repository instead of mocks.
-- Contract tests are in place for `POST /auth/login`, `POST /auth/refresh`, and `GET /auth/me`.
-- The login, refresh, and me contract tests are intentionally failing until those endpoints are implemented.
+- `POST /auth/login`, `POST /auth/refresh`, and `GET /auth/me` are implemented.
+- Auth endpoint contract tests are passing.
 
 ## Phase 0 Scope
 
@@ -65,9 +65,9 @@ Current endpoint contract:
 | Endpoint | Status | Notes |
 | --- | --- | --- |
 | `POST /auth/register` | Implemented | Creates a user and returns `201 Created`. |
-| `POST /auth/login` | Test first | Contract test exists and currently fails. |
-| `POST /auth/refresh` | Test first | Contract test exists and currently fails. |
-| `GET /auth/me` | Test first | Contract test exists and currently fails. |
+| `POST /auth/login` | Implemented | Returns short-lived access token and opaque refresh token. |
+| `POST /auth/refresh` | Implemented | Rotates refresh token and returns a new token pair. |
+| `GET /auth/me` | Implemented | Returns the current user from a valid access token. |
 
 Planned refresh-token design:
 
@@ -108,9 +108,8 @@ Run the auth-service tests:
 ./gradlew :auth-service:test --no-daemon
 ```
 
-At the current TDD checkpoint, this command is expected to fail because the
-contract tests for `POST /auth/login`, `POST /auth/refresh`, and `GET /auth/me`
-describe behavior that has not been implemented yet.
+At the current checkpoint, the auth endpoint contract tests are expected to
+pass.
 
 ## Phase 0 Verification
 

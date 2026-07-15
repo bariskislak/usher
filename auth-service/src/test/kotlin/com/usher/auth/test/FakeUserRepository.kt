@@ -13,6 +13,9 @@ class FakeUserRepository : UserRepository {
     override fun findByEmail(email: String): User? =
         usersById.values.firstOrNull { it.email == email }
 
+    override fun findById(id: UUID): User? =
+        usersById[id]
+
     override fun save(user: User): User {
         usersById[user.id] = user
         return user
