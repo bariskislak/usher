@@ -1,6 +1,7 @@
 package com.usher.url.shortening.api
 
 import com.usher.url.shortening.application.CreateShortUrlService
+import com.usher.url.shortening.application.ResolveShortUrlService
 import com.usher.url.shortening.domain.ShortUrl
 import com.usher.url.shortening.domain.ShortUrlStatus
 import com.usher.url.test.FakeShortUrlRepository
@@ -24,11 +25,15 @@ class ShortUrlRedirectEndpointContractTest {
             shortUrlRepository = shortUrlRepository,
             shortCodeGenerator = StubShortCodeGenerator(listOf("unused")),
         )
+        val resolveShortUrlService = ResolveShortUrlService(
+            shortUrlRepository = shortUrlRepository,
+        )
 
         mockMvc = MockMvcBuilders
             .standaloneSetup(
                 ShortUrlController(
                     createShortUrlService = createShortUrlService,
+                    resolveShortUrlService = resolveShortUrlService,
                     ownerIdResolver = OwnerIdResolver(),
                     publicBaseUrl = "http://localhost:8082",
                 ),

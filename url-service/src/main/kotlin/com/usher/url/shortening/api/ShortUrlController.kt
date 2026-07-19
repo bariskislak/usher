@@ -2,25 +2,29 @@ package com.usher.url.shortening.api
 
 import com.usher.url.shortening.application.CreateShortUrlCommand
 import com.usher.url.shortening.application.CreateShortUrlService
+import com.usher.url.shortening.application.ResolveShortUrlQuery
+import com.usher.url.shortening.application.ResolveShortUrlService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
-@RequestMapping("/urls")
 class ShortUrlController(
     private val createShortUrlService: CreateShortUrlService,
+    private val resolveShortUrlService: ResolveShortUrlService,
     private val ownerIdResolver: OwnerIdResolver,
     @Value("\${url-service.public-base-url:http://localhost:8082}")
     private val publicBaseUrl: String,
 ) {
-    @PostMapping
+    @PostMapping("/urls")
     fun create(
         @RequestHeader("X-User-Id", required = false) ownerIdHeader: String?,
         @Valid @RequestBody request: CreateShortUrlRequest,
@@ -40,5 +44,14 @@ class ShortUrlController(
                 createdAt = shortUrl.createdAt,
             ),
         )
+    }
+
+    @GetMapping("/{shortCode}")
+    fun redirect(@PathVariable shortCode: String): ResponseEntity<Void> {
+        val originalUrl = resolveShortUrlService.resolve(ResolveShortUrlQuery(shortCode = shortCode))
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .location(URI.create(originalUrl))
+            .build()
     }
 }

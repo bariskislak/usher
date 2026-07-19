@@ -2,6 +2,7 @@ package com.usher.url.shortening.api
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.usher.url.shortening.application.CreateShortUrlService
+import com.usher.url.shortening.application.ResolveShortUrlService
 import com.usher.url.test.FakeShortUrlRepository
 import com.usher.url.test.StubShortCodeGenerator
 import com.usher.url.web.ApiExceptionHandler
@@ -20,15 +21,20 @@ class ShortUrlEndpointContractTest {
 
     @BeforeEach
     fun setUp() {
+        val shortUrlRepository = FakeShortUrlRepository()
         val createShortUrlService = CreateShortUrlService(
-            shortUrlRepository = FakeShortUrlRepository(),
+            shortUrlRepository = shortUrlRepository,
             shortCodeGenerator = StubShortCodeGenerator(listOf("abc123")),
+        )
+        val resolveShortUrlService = ResolveShortUrlService(
+            shortUrlRepository = shortUrlRepository,
         )
 
         mockMvc = MockMvcBuilders
             .standaloneSetup(
                 ShortUrlController(
                     createShortUrlService = createShortUrlService,
+                    resolveShortUrlService = resolveShortUrlService,
                     ownerIdResolver = OwnerIdResolver(),
                     publicBaseUrl = "http://localhost:8082",
                 ),

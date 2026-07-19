@@ -26,6 +26,7 @@ Current auth progress:
 Current URL progress:
 
 - `POST /urls` is implemented.
+- `GET /{shortCode}` is implemented.
 - URL persistence is modeled behind an application-level `ShortUrlRepository` port.
 - PostgreSQL persistence is implemented through a JPA adapter.
 - Tests use a fake in-memory repository and deterministic short code generator.
@@ -100,12 +101,14 @@ Implemented so far:
 - Short code collision retry.
 - Original URL validation.
 - `POST /urls`.
+- `GET /{shortCode}`.
 
 Current endpoint contract:
 
 | Endpoint | Status | Notes |
 | --- | --- | --- |
 | `POST /urls` | Implemented | Creates a short URL for the owner from `X-User-Id`. |
+| `GET /{shortCode}` | Implemented | Redirects active short URLs to their original URL. |
 
 The URL service currently accepts `X-User-Id` as a temporary auth boundary. The
 gateway/JWT integration will replace this loose coupling in a later phase.

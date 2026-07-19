@@ -3,6 +3,8 @@ package com.usher.url.web
 import com.usher.url.shortening.api.InvalidOwnerIdException
 import com.usher.url.shortening.api.MissingOwnerIdException
 import com.usher.url.shortening.application.InvalidOriginalUrlException
+import com.usher.url.shortening.application.ShortUrlDisabledException
+import com.usher.url.shortening.application.ShortUrlNotFoundException
 import com.usher.url.shortening.application.ShortCodeGenerationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -40,5 +42,17 @@ class ApiExceptionHandler {
     fun handleShortCodeGeneration(): ResponseEntity<ApiError> =
         ResponseEntity.status(HttpStatus.CONFLICT).body(
             ApiError(code = "short_code_generation_failed", message = "Could not generate a unique short code"),
+        )
+
+    @ExceptionHandler(ShortUrlNotFoundException::class)
+    fun handleShortUrlNotFound(): ResponseEntity<ApiError> =
+        ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            ApiError(code = "short_url_not_found", message = "Short URL not found"),
+        )
+
+    @ExceptionHandler(ShortUrlDisabledException::class)
+    fun handleShortUrlDisabled(): ResponseEntity<ApiError> =
+        ResponseEntity.status(HttpStatus.GONE).body(
+            ApiError(code = "short_url_disabled", message = "Short URL is disabled"),
         )
 }
