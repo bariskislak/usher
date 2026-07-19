@@ -27,6 +27,7 @@ Current URL progress:
 
 - `POST /urls` is implemented.
 - `GET /{shortCode}` is implemented.
+- Successful redirects publish a `UrlClickedEvent`.
 - URL persistence is modeled behind an application-level `ShortUrlRepository` port.
 - PostgreSQL persistence is implemented through a JPA adapter.
 - Tests use a fake in-memory repository and deterministic short code generator.
@@ -102,6 +103,10 @@ Implemented so far:
 - Original URL validation.
 - `POST /urls`.
 - `GET /{shortCode}`.
+- `UrlClickedEvent` publishing through the shared `EventPublisher` port.
+
+The current URL service event publisher is a no-op adapter. Kafka publishing is
+intentionally left for a later infrastructure-focused step.
 
 Current endpoint contract:
 

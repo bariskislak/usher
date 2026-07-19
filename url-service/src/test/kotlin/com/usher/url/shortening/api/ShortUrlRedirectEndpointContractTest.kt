@@ -4,6 +4,7 @@ import com.usher.url.shortening.application.CreateShortUrlService
 import com.usher.url.shortening.application.ResolveShortUrlService
 import com.usher.url.shortening.domain.ShortUrl
 import com.usher.url.shortening.domain.ShortUrlStatus
+import com.usher.url.test.FakeEventPublisher
 import com.usher.url.test.FakeShortUrlRepository
 import com.usher.url.test.StubShortCodeGenerator
 import com.usher.url.web.ApiExceptionHandler
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import java.time.Clock
 import java.util.UUID
 
 class ShortUrlRedirectEndpointContractTest {
@@ -27,6 +29,8 @@ class ShortUrlRedirectEndpointContractTest {
         )
         val resolveShortUrlService = ResolveShortUrlService(
             shortUrlRepository = shortUrlRepository,
+            eventPublisher = FakeEventPublisher(),
+            clock = Clock.systemUTC(),
         )
 
         mockMvc = MockMvcBuilders

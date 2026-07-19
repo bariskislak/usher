@@ -3,6 +3,7 @@ package com.usher.url.shortening.api
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.usher.url.shortening.application.CreateShortUrlService
 import com.usher.url.shortening.application.ResolveShortUrlService
+import com.usher.url.test.FakeEventPublisher
 import com.usher.url.test.FakeShortUrlRepository
 import com.usher.url.test.StubShortCodeGenerator
 import com.usher.url.web.ApiExceptionHandler
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import java.time.Clock
 
 class ShortUrlEndpointContractTest {
     private val objectMapper = jacksonObjectMapper()
@@ -28,6 +30,8 @@ class ShortUrlEndpointContractTest {
         )
         val resolveShortUrlService = ResolveShortUrlService(
             shortUrlRepository = shortUrlRepository,
+            eventPublisher = FakeEventPublisher(),
+            clock = Clock.systemUTC(),
         )
 
         mockMvc = MockMvcBuilders
