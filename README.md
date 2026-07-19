@@ -4,10 +4,10 @@ Microservices learning project built with Kotlin + Spring Boot.
 
 ## Current Status
 
-The project has completed the Phase 0 foundation and has started Phase 1 in
-`auth-service`.
+The project has completed the Phase 0 foundation and Phase 1 authentication
+flow. Phase 2 has started in `url-service`.
 
-Phase 1 is being implemented with a TDD flow:
+The project is being implemented with a TDD flow:
 
 - Write endpoint contract tests first.
 - Keep tests compiling while the next behavior is intentionally red.
@@ -22,6 +22,14 @@ Current auth progress:
 - Tests use a fake in-memory repository instead of mocks.
 - `POST /auth/login`, `POST /auth/refresh`, and `GET /auth/me` are implemented.
 - Auth endpoint contract tests are passing.
+
+Current URL progress:
+
+- `POST /urls` is implemented.
+- URL persistence is modeled behind an application-level `ShortUrlRepository` port.
+- PostgreSQL persistence is implemented through a JPA adapter.
+- Tests use a fake in-memory repository and deterministic short code generator.
+- Auth is intentionally loosely coupled for now through the `X-User-Id` request header.
 
 ## Phase 0 Scope
 
@@ -59,6 +67,9 @@ Implemented so far:
 - Stateless Spring Security foundation.
 - Validation and API error responses.
 - `POST /auth/register`.
+- `POST /auth/login`.
+- `POST /auth/refresh`.
+- `GET /auth/me`.
 
 Current endpoint contract:
 
@@ -75,6 +86,29 @@ Planned refresh-token design:
 - Store only a SHA-256 token hash.
 - Rotate refresh tokens on every refresh request.
 - Revoke refresh tokens later for logout and password-change flows.
+
+## URL Service
+
+Implemented so far:
+
+- `urls` Liquibase migration.
+- `ShortUrl` entity and `ShortUrlStatus`.
+- `ShortUrlRepository` application port.
+- `JpaShortUrlRepository` and `JpaShortUrlRepositoryAdapter` for PostgreSQL persistence.
+- `FakeShortUrlRepository` for tests.
+- Random short code generation.
+- Short code collision retry.
+- Original URL validation.
+- `POST /urls`.
+
+Current endpoint contract:
+
+| Endpoint | Status | Notes |
+| --- | --- | --- |
+| `POST /urls` | Implemented | Creates a short URL for the owner from `X-User-Id`. |
+
+The URL service currently accepts `X-User-Id` as a temporary auth boundary. The
+gateway/JWT integration will replace this loose coupling in a later phase.
 
 ## Common Ports
 
@@ -102,13 +136,14 @@ Service health check URLs:
 
 ## Running Tests
 
-Run the auth-service tests:
+Run service tests:
 
 ```bash
 ./gradlew :auth-service:test --no-daemon
+./gradlew :url-service:test --no-daemon
 ```
 
-At the current checkpoint, the auth endpoint contract tests are expected to
+At the current checkpoint, auth-service and url-service tests are expected to
 pass.
 
 ## Phase 0 Verification
